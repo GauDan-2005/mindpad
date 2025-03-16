@@ -22,7 +22,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className="relative antialiased flex flex-col min-h-screen max-h-screen">
-          <Header />
+          {/* <Header /> */}
           <div className="flex flex-1">
             <SideBar />
             <main className="flex-1 p-4 bg-gray-100">{children}</main>
