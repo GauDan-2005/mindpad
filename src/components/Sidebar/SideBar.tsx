@@ -40,6 +40,7 @@ const SideBar = () => {
     editor: [],
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [data, loading, error] = useCollection(
     user &&
       query(

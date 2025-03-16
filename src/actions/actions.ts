@@ -6,8 +6,15 @@ import liveblocks from "@/lib/liveblocks";
 
 const createNewDocument = async () => {
   await auth.protect();
+  const { sessionClaims, userId } = await auth();
 
-  const { sessionClaims } = await auth();
+  // Validate session claims exist
+  if (!sessionClaims) {
+    throw new Error("Session claims not found");
+  }
+
+  // Safely get email with fallback
+  const email = sessionClaims.email || userId;
 
   const docCollectionRef = adminDb.collection("documents");
   const docRef = await docCollectionRef.add({
@@ -16,11 +23,11 @@ const createNewDocument = async () => {
 
   await adminDb
     .collection("users")
-    .doc(sessionClaims?.email!)
+    .doc(email)
     .collection("rooms")
     .doc(docRef.id)
     .set({
-      userId: sessionClaims?.email!,
+      userId: email,
       role: "owner",
       createdAt: new Date(),
       roomId: docRef.id,
@@ -33,7 +40,6 @@ const deleteDocument = async (roomId: string) => {
   await auth.protect();
 
   try {
-    // delete document referece
     await adminDb.collection("documents").doc(roomId).delete();
 
     const query = await adminDb
@@ -42,14 +48,11 @@ const deleteDocument = async (roomId: string) => {
       .get();
     const batch = adminDb.batch();
 
-    // delete room reference in the user's collection for every user in that room
     query.docs.forEach((doc) => {
       batch.delete(doc.ref);
     });
 
     await batch.commit();
-
-    // delete the room from liveblocks
     await liveblocks.deleteRoom(roomId);
 
     return { success: true };
@@ -61,6 +64,11 @@ const deleteDocument = async (roomId: string) => {
 
 const inviteUserToDocument = async (roomId: string, email: string) => {
   await auth.protect();
+
+  // Validate email format
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    throw new Error("Invalid email address");
+  }
 
   try {
     await adminDb

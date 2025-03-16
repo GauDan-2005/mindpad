@@ -9,20 +9,20 @@ const POST = async (req: NextRequest) => {
   const { sessionClaims } = await auth();
   const { room } = await req.json();
 
-  if (!sessionClaims?.email) {
+  if (!sessionClaims || !sessionClaims?.email) {
     throw new Error("Email is required for session preparation.");
   }
-  const session = liveblocks.prepareSession(sessionClaims?.email!, {
+  const session = liveblocks.prepareSession(sessionClaims.email, {
     userInfo: {
-      name: sessionClaims?.fullName!,
-      email: sessionClaims?.email!,
-      avatar: sessionClaims?.image!,
+      name: sessionClaims.fullName,
+      email: sessionClaims.email,
+      avatar: sessionClaims.image,
     },
   });
 
   const usersInRoom = await adminDb
     .collectionGroup("rooms")
-    .where("userId", "==", sessionClaims.email!)
+    .where("userId", "==", sessionClaims.email)
     .get();
 
   const userInRoom = usersInRoom.docs.find((doc) => doc.id === room);
