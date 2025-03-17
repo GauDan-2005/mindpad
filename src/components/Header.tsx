@@ -11,13 +11,19 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import Breadcrumbs from "./Breadcrumbs";
 import { Button } from "./ui/button";
+import { useState } from "react";
 
 const Header = () => {
   const { user } = useUser();
+  const [isSidebar, setIsSidebar] = useState(false);
 
   return (
     <div className="flex sticky top-0 bg-background h-16 shrink-0 items-center gap-2 border-b px-4 z-[1500] justify-between p-4 bg-white border-gray-200">
-      <SidebarTrigger className="-ml-1" />
+      <SidebarTrigger
+        className="-ml-1"
+        onClick={() => setIsSidebar(!isSidebar)}
+        defaultChecked={isSidebar}
+      />
       <Separator orientation="vertical" className="mr-2 h-4" />
       {user && (
         <h1 className="text-2xl font-semibold">
@@ -28,11 +34,14 @@ const Header = () => {
 
       {/* Breadcrumbs */}
       <Breadcrumbs />
+
+      {/* user button */}
       <div className="flex items-center justify-center">
         <SignedOut>
           <Button
             asChild
-            className="px-4 py-2 rounded-sm bg-primary hover:bg-primary/80 "
+            className="px-4 py-2 rounded-sm bg-primary hover:bg-primary/80"
+            onClick={() => window.location.reload()}
           >
             <SignInButton fallbackRedirectUrl={"/"} />
           </Button>

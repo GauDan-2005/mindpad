@@ -4,10 +4,6 @@
   padding-bottom: 0.8rem;
 }
 
-.bn-side-menu {
-  z-index: 10;
-}
-
 @media (max-width: 768px) {
   .bn-editor {
     padding-inline: 2rem;

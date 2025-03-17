@@ -45,6 +45,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         where("userId", "==", user.emailAddresses[0].toString())
       )
   );
+
   useEffect(() => {
     if (!data) return;
 
@@ -65,9 +66,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     );
 
     setGroupedData(grouped);
-  }, [data]);
+  }, [data, user]);
+
+  useEffect(() => {
+    if (!user) {
+      setGroupedData({ owner: [], editor: [] });
+    }
+  }, [user]);
   return (
-    <Sidebar {...props}>
+    <Sidebar {...props} className="">
       <SidebarHeader className="py-3.5">
         <Logo />
       </SidebarHeader>
