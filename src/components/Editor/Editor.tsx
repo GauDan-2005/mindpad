@@ -77,7 +77,7 @@ const Editor = () => {
   if (!room || !provider || !doc) return null;
 
   return (
-    <div className="max-w-6xl mx-auto w-full flex flex-1 flex-col min-h-full">
+    <div className="max-w-6xl mx-auto w-full flex flex-1 flex-col">
       <div className="flex items-center justify-end gap-2 mb-10">
         {/* Translate Document AI */}
         <TranslateDocument doc={doc} />
@@ -95,7 +95,7 @@ const Editor = () => {
       </div>
 
       {/* Block Note */}
-      <div className="flex flex-1 self-stretch overflow-y-auto">
+      <div className="flex flex-1">
         <BlockNote doc={doc} provider={provider} darkMode={darkMode} />
       </div>
     </div>

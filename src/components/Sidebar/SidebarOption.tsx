@@ -5,6 +5,7 @@ import { doc } from "firebase/firestore";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useDocumentData } from "react-firebase-hooks/firestore";
+import { SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
 
 const SidebarOption = ({ href, id }: { href: string; id: string }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -14,15 +15,16 @@ const SidebarOption = ({ href, id }: { href: string; id: string }) => {
 
   if (!data) return null;
 
+  console.log(pathname, isActive);
+
   return (
-    <Link
-      href={href}
-      className={`border p-2 rounded-md ${
-        isActive ? "bg-gray-300 font-bold border-black" : "border-gray-400"
-      }`}
-    >
-      <p className="truncate">{data.title}</p>
-    </Link>
+    <SidebarMenuItem>
+      <SidebarMenuButton asChild isActive={isActive}>
+        <Link href={href}>
+          <p className="truncate">{data.title}</p>
+        </Link>
+      </SidebarMenuButton>
+    </SidebarMenuItem>
   );
 };
 export default SidebarOption;

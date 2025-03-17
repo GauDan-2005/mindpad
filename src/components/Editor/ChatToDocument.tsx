@@ -74,7 +74,7 @@ const ChatToDocument = ({ doc }: { doc: Y.Doc }) => {
           {question && <p className="mt-5 text-gray-500">Q: {question}</p>}
         </DialogHeader>
         {summary && (
-          <div className="flex flex-col items-start max-h-96 overflow-y-scroll gap-2 p-5 bg-gray-100">
+          <div className="flex flex-col items-start max-h-96 overflow-y-auto gap-2 p-5 bg-gray-100">
             <div className="flex">
               <BotIcon className="w-10 flex-shrink-0" />
               <p className="font-bold">

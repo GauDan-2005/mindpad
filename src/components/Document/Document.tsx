@@ -44,7 +44,7 @@ const Document = ({ id }: { id: string }) => {
   }, [data]);
 
   return (
-    <div className="bg-white p-5 h-full flex-1 rounded-lg flex flex-col overflow-y-auto max-w-6xl w-full mx-auto">
+    <div className="bg-white md:p-5 h-full flex-1 rounded-lg flex flex-col max-w-6xl w-full mx-auto">
       <div className="flex  w-full mx-auto justify-between items-center pb-5">
         <form
           onSubmit={updateTitle}
