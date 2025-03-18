@@ -15,8 +15,6 @@ const SidebarOption = ({ href, id }: { href: string; id: string }) => {
 
   if (!data) return null;
 
-  console.log(pathname, isActive);
-
   return (
     <SidebarMenuItem>
       <SidebarMenuButton asChild isActive={isActive}>
