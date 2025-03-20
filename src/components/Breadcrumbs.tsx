@@ -15,6 +15,10 @@ const Breadcrumbs = () => {
   const pathname = usePathname();
   const segments = pathname.split("/");
 
+  // if on home page dont render anything
+
+  if (pathname === "/") return null;
+
   return (
     <Breadcrumb className="hidden md:block">
       <BreadcrumbList>

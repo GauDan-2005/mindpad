@@ -17,7 +17,7 @@ const RoomProvider = ({
 }) => {
   return (
     <RoomProviderWrapper id={roomId} initialPresence={{ cursor: null }}>
-      <ClientSideSuspense fallback={<LoadingSpinner />}>
+      <ClientSideSuspense fallback={<LoadingSpinner className="w-24 h-24" />}>
         <LiveCursorProvider>{children}</LiveCursorProvider>
       </ClientSideSuspense>
     </RoomProviderWrapper>

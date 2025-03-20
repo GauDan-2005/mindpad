@@ -58,7 +58,12 @@ const ChatToDocument = ({ doc }: { doc: Y.Doc }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <Button asChild variant={"outline"} onClick={() => setIsOpen(!isOpen)}>
+      <Button
+        asChild
+        variant={"outline"}
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex-1 md:flex-none"
+      >
         <DialogTrigger>
           <MessageCircleCode className="mr-2" />
           Chat to Document
@@ -74,7 +79,7 @@ const ChatToDocument = ({ doc }: { doc: Y.Doc }) => {
           {question && <p className="mt-5 text-gray-500">Q: {question}</p>}
         </DialogHeader>
         {summary && (
-          <div className="flex flex-col items-start max-h-96 overflow-y-scroll gap-2 p-5 bg-gray-100">
+          <div className="flex flex-col items-start max-h-96 overflow-y-auto gap-2 p-5 bg-transparent">
             <div className="flex">
               <BotIcon className="w-10 flex-shrink-0" />
               <p className="font-bold">
