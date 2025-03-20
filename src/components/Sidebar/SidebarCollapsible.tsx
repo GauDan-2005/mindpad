@@ -30,7 +30,7 @@ const SidebarCollapsible = ({
   return (
     <Collapsible
       title="My Notes"
-      defaultOpen={false}
+      defaultOpen={true}
       className="group/collapsible"
     >
       <SidebarGroup>

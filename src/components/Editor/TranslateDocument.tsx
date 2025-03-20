@@ -89,7 +89,12 @@ const TranslateDocument = ({ doc }: { doc: Y.Doc }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <Button asChild variant={"outline"} onClick={() => setIsOpen(!isOpen)}>
+      <Button
+        asChild
+        variant={"outline"}
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex-1 md:flex-none"
+      >
         <DialogTrigger>
           <LanguagesIcon />
           Translate

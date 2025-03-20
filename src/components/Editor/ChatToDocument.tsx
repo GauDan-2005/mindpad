@@ -58,7 +58,12 @@ const ChatToDocument = ({ doc }: { doc: Y.Doc }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <Button asChild variant={"outline"} onClick={() => setIsOpen(!isOpen)}>
+      <Button
+        asChild
+        variant={"outline"}
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex-1 md:flex-none"
+      >
         <DialogTrigger>
           <MessageCircleCode className="mr-2" />
           Chat to Document

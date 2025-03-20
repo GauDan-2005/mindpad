@@ -19,6 +19,8 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import { useUser } from "@clerk/nextjs";
 import SidebarCollapsible from "./SidebarCollapsible";
 import { Separator } from "../ui/separator";
+import NewDocumentButton from "../NewDocumentButton";
+import LoadingSpinner from "../LoadingSpinner";
 
 interface RoomDocument extends DocumentData {
   createdAt: string;
@@ -74,15 +76,26 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     }
   }, [user]);
   return (
-    <Sidebar {...props} className="">
+    <Sidebar {...props} className="bg-background">
       <SidebarHeader className="py-3.5">
         <Logo />
       </SidebarHeader>
-      <SidebarContent className="gap-0">
-        <Separator />
-        <SidebarCollapsible data={groupedData.owner} title="My Notes" />
-        <SidebarCollapsible data={groupedData.editor} title="Shared with me" />
-      </SidebarContent>
+      {loading ? (
+        <LoadingSpinner className="w-12 h-12" />
+      ) : (
+        <SidebarContent className="gap-0">
+          <Separator />
+          <div className="flex items-center justify-center py-2 px-4">
+            <NewDocumentButton />
+          </div>
+          <Separator />
+          <SidebarCollapsible data={groupedData.owner} title="My Notes" />
+          <SidebarCollapsible
+            data={groupedData.editor}
+            title="Shared with me"
+          />
+        </SidebarContent>
+      )}
       <SidebarRail />
     </Sidebar>
   );
