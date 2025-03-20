@@ -1,9 +1,21 @@
+"use client";
+
 import NewDocumentButton from "@/components/NewDocumentButton";
 import { ArrowUpCircle, FilePlus2 } from "lucide-react";
+import { useTheme } from "next-themes";
 
 export default function Home() {
+  const { theme, systemTheme } = useTheme();
+  const currentTheme = theme === "system" ? systemTheme : theme;
+
   return (
-    <main className="flex space-x-2 items-center justify-center h-full flex-1 bg-custom-gradient">
+    <main
+      className={`flex space-x-2 items-center justify-center h-full flex-1 ${
+        currentTheme === "dark"
+          ? "bg-custom-gradient-dark"
+          : "bg-custom-gradient-light"
+      }`}
+    >
       <div className="flex flex-col gap-6 items-center justify-center">
         <div className="flex flex-col gap-8 items-center justify-center px-16 md:px-48 py-10 md:py-16 border-[0.8rem] border-background/25 border-dashed border-opacity-20">
           <FilePlus2 className="w-28 h-28 text-primary animate-pulse" />
