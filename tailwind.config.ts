@@ -72,6 +72,8 @@ const config: Config = {
       backgroundImage: {
         "custom-gradient-light":
           "linear-gradient(to bottom right, #CCFBF1, #D8B4FE)",
+        "custom-gradient-dark":
+          "linear-gradient(to bottom right, #115E59, #581C87)",
       },
     },
   },
