@@ -16,7 +16,6 @@ import "@blocknote/core/style.css";
 import "./Editor.css";
 import TranslateDocument from "./TranslateDocument";
 import ChatToDocument from "./ChatToDocument";
-import { ModeToggle } from "../ModeToggle";
 import { useTheme } from "next-themes";
 
 type EditorProps = {
