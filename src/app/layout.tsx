@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
+import { Georama } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
-
-import Header from "@/components/Header";
-import SideBar from "@/components/Sidebar/SideBar";
 
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/components/providers/theme-provider";
+
+const georama = Georama({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-georama",
+});
 
 export const metadata: Metadata = {
   title: "MindPad",
@@ -21,12 +26,17 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className="relative antialiased flex flex-col min-h-screen max-h-screen">
-          <Header />
-          <div className="flex flex-1">
-            <SideBar />
-            <main className="flex-1 p-4 bg-gray-100">{children}</main>
-          </div>
+        <body
+          className={`antialiased flex flex-col min-h-screen font-sans ${georama.variable}`}
+        >
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
           <Toaster position="top-center" />
         </body>
       </html>
