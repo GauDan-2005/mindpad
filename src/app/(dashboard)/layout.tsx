@@ -17,8 +17,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <main
           className={`flex flex-1 flex-col gap-4 overflow-y-auto transition-all duration-300 ${
             currentTheme === "dark"
-              ? "md:bg-custom-gradient-dark"
-              : "md:bg-custom-gradient-light"
+              ? "bg-custom-gradient-dark"
+              : "bg-custom-gradient-light"
           }`}
         >
           {children}
