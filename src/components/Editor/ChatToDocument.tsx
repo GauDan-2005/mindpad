@@ -30,28 +30,45 @@ const ChatToDocument = ({ doc }: { doc: Y.Doc }) => {
     setQuestion(input);
 
     startTransition(async () => {
-      const documentData = await doc.get("document-store").toJSON();
+      try {
+        // ✅ FIX: Remove unnecessary await on synchronous function
+        const documentData = doc.get("document-store").toJSON();
 
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/chatToDocument`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            documentData,
-            question: input,
-          }),
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/chatToDocument`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              documentData,
+              question: input,
+            }),
+          }
+        );
+
+        if (!res.ok) {
+          const errorText = await res.text();
+          throw new Error(`Failed to get response: ${res.status}`);
         }
-      );
 
-      if (res.ok) {
         const { message } = await res.json();
+
+        if (!message) {
+          throw new Error("Empty response from AI");
+        }
+
         setInput("");
         setSummary(message);
-
         toast.success("Question asked successfully!");
+      } catch (error) {
+        console.error("Chat error:", error);
+        toast.error(
+          error instanceof Error
+            ? error.message
+            : "Failed to get response. Please try again."
+        );
       }
     });
   };

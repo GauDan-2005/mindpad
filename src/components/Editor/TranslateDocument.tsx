@@ -57,27 +57,44 @@ const TranslateDocument = ({ doc }: { doc: Y.Doc }) => {
     e.preventDefault();
 
     startTransition(async () => {
-      const documentData = doc.get("document-store").toJSON();
+      try {
+        const documentData = doc.get("document-store").toJSON();
 
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/translateDocument`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            documentData,
-            targetLang: language,
-          }),
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/translateDocument`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              documentData,
+              targetLang: language,
+            }),
+          }
+        );
+
+        if (!res.ok) {
+          const errorText = await res.text();
+          throw new Error(`Translation failed: ${res.status}`);
         }
-      );
 
-      if (res.ok) {
-        const { translated_text } = await res.json();
+        // ✅ FIX: Changed from 'translated_text' to 'text' to match backend response
+        const { text } = await res.json();
 
-        setSummary(translated_text);
+        if (!text) {
+          throw new Error("Empty translation received");
+        }
+
+        setSummary(text);
         toast.success("Translated Summary successfully!");
+      } catch (error) {
+        console.error("Translation error:", error);
+        toast.error(
+          error instanceof Error
+            ? error.message
+            : "Failed to translate. Please try again."
+        );
       }
     });
   };
