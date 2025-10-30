@@ -23,9 +23,11 @@ interface RoomDocument extends DocumentData {
 const SidebarCollapsible = ({
   data,
   title,
+  docMap,
 }: {
   data: RoomDocument[];
   title: string;
+  docMap: Map<string, { title: string }>;
 }) => {
   return (
     <Collapsible
@@ -56,6 +58,7 @@ const SidebarCollapsible = ({
                     key={doc.id}
                     href={`/doc/${doc.id}`}
                     id={doc.id}
+                    docMap={docMap}
                   />
                 ))
               )}
