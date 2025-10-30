@@ -76,7 +76,7 @@ const TranslateDocument = ({ doc }: { doc: Y.Doc }) => {
 
         if (!res.ok) {
           const errorText = await res.text();
-          throw new Error(`Translation failed: ${res.status}`);
+          throw new Error(`Translation failed: ${res.status} - ${errorText}`);
         }
 
         // ✅ FIX: Changed from 'translated_text' to 'text' to match backend response

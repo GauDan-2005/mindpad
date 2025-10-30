@@ -50,7 +50,9 @@ const ChatToDocument = ({ doc }: { doc: Y.Doc }) => {
 
         if (!res.ok) {
           const errorText = await res.text();
-          throw new Error(`Failed to get response: ${res.status}`);
+          throw new Error(
+            `Failed to get response: ${res.status} - ${errorText}`
+          );
         }
 
         const { message } = await res.json();
