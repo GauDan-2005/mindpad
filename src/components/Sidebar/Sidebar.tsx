@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import {
   Sidebar,
   SidebarContent,
@@ -13,6 +13,8 @@ import {
   DocumentData,
   query,
   where,
+  collection,
+  documentId,
 } from "firebase/firestore";
 import { db } from "@/firebase";
 import { useCollection } from "react-firebase-hooks/firestore";
@@ -48,6 +50,31 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       )
   );
 
+  // ✅ PERFORMANCE: Extract all document IDs from rooms
+  const docIds = useMemo(() => {
+    if (!data) return [];
+    return data.docs.map((doc) => doc.data().roomId);
+  }, [data]);
+
+  // ✅ PERFORMANCE: Batch fetch all documents (fix N+1 query problem)
+  // Firestore 'in' query supports max 10 items, so we batch in chunks
+  const [documents, docsLoading] = useCollection(
+    docIds.length > 0 && docIds.length <= 10
+      ? query(collection(db, "documents"), where(documentId(), "in", docIds))
+      : null
+  );
+
+  // ✅ PERFORMANCE: Create document lookup map for O(1) access
+  const docMap = useMemo(() => {
+    const map = new Map<string, { title: string }>();
+    if (documents) {
+      documents.docs.forEach((doc) => {
+        map.set(doc.id, doc.data() as { title: string });
+      });
+    }
+    return map;
+  }, [documents]);
+
   useEffect(() => {
     if (!data) return;
 
@@ -80,7 +107,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader className="py-3.5">
         <Logo />
       </SidebarHeader>
-      {loading ? (
+      {loading || docsLoading ? (
         <LoadingSpinner className="w-12 h-12" />
       ) : (
         <SidebarContent className="gap-0">
@@ -89,10 +116,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <NewDocumentButton />
           </div>
           <Separator />
-          <SidebarCollapsible data={groupedData.owner} title="My Notes" />
+          <SidebarCollapsible
+            data={groupedData.owner}
+            title="My Notes"
+            docMap={docMap}
+          />
           <SidebarCollapsible
             data={groupedData.editor}
             title="Shared with me"
+            docMap={docMap}
           />
         </SidebarContent>
       )}
