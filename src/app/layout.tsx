@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 const georama = Georama({
   subsets: ["latin"],
@@ -29,14 +30,16 @@ export default function RootLayout({
         <body
           className={`antialiased flex flex-col min-h-screen font-sans ${georama.variable}`}
         >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
+          <ErrorBoundary>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+            </ThemeProvider>
+          </ErrorBoundary>
           <Toaster position="top-center" />
         </body>
       </html>
